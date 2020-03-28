@@ -10,7 +10,6 @@ const statistic = require('./statistic');
 // middleware
 app.use(middleware.setHeader);
 app.use('/blog', middleware.ipFilterAndLogIn);
-app.use('/blog/detail', middleware.ipFilterAndLogIn);
 
 
 // General
@@ -18,7 +17,7 @@ app.get('/', site.index);
 
 
 // blog
-app.get('/blog', blog.lists);
+app.get('/blog/lists', blog.lists);
 app.get('/blog/detail', blog.detail);
 app.post('/blog/update', blog.update);
 

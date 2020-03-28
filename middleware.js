@@ -4,7 +4,7 @@ const mysql = require('mysql');
 
 exports.setHeader = function (req, res, next) {
   res.setHeader("Access-Control-Allow-Origin","http://localhost:8081");
-  console.log(req.originalUrl);
+  console.log('req.originalUrl: ', req.originalUrl);
   next();
 };
 
@@ -32,7 +32,7 @@ exports.ipFilterAndLogIn = function (req, res, next) {
     password: 'rootroot',
     database: 'test'
   });
-  connection.connect(); //todo: disconnect
+  connection.connect();
 
   connection.query(sql, function(error, res) {
     if (typeof res != 'undefined') {

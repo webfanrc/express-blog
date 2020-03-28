@@ -13,14 +13,18 @@ var connection = mysql.createConnection({
 connection.connect(); //todo: disconnect
 
 exports.lists = function(request, response) {
-  let sql = 'select id, title, DATE_FORMAT(create_date, \'%Y年%m月%d日\') as date from blog order by create_date DESC';
+
+  let sql = `
+  select id, title, DATE_FORMAT(create_date, \'%Y年%m月%d日\') as date 
+  from blog 
+  order by create_date DESC`;
   connection.query(sql, function(error, res) {
+    if (error) throw error;
+
     let results = {};
     results.blogList = res;
 
-    if (typeof res != 'undefined') {
-      response.write(JSON.stringify(results));
-    }
+    response.write(JSON.stringify(results));
     response.end();
   });
 };
@@ -46,13 +50,15 @@ exports.update = function(request, response) {
     if (post != '') {
       let userData = JSON.parse(post);
 
-      console.log(123);
       const secret = userData.passport;
       const hash = crypto.createHmac('sha256', secret).digest('hex');
       if (hash == UpdateArticleSecret) {
-        connection.query(`UPDATE blog SET ? where id=${userData.id}`, {
+        connection.query(`UPDATE blog SET ?, edit_date = NOW() where id=${userData.id}`, {
           content: userData.blog_content,
-        })
+        }, function(error, results, fields) {
+          console.log(error);
+          console.log(results.length);
+        });
       } else {
         console.log('fail');
       }
