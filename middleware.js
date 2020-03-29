@@ -1,6 +1,12 @@
 const mysql = require('mysql');
 
-
+var connection = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: 'rootroot',
+  database: 'test'
+});
+connection.connect();
 
 exports.setHeader = function (req, res, next) {
   res.setHeader("Access-Control-Allow-Origin","http://localhost:8081");
@@ -25,14 +31,6 @@ exports.ipFilterAndLogIn = function (req, res, next) {
   let formate_view_date = view_date.getFullYear() + '-' + (month) + '-' + date;
 
   let sql = `select * from ip where user_ip='${user_ip}' and view_title='${view_title}' and date_format(view_date, '%Y-%m-%d')='${formate_view_date}'`;
-
-  var connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'rootroot',
-    database: 'test'
-  });
-  connection.connect();
 
   connection.query(sql, function(error, res) {
     if (typeof res != 'undefined') {

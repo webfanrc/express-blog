@@ -55,6 +55,8 @@ exports.update = function(request, response) {
       if (hash == UpdateArticleSecret) {
         connection.query(`UPDATE blog SET ?, edit_date = NOW() where id=${userData.id}`, {
           content: userData.blog_content,
+          title: userData.blog_title,
+          tag: userData.blog_tag,
         }, function(error, results, fields) {
           console.log(error);
           console.log(results.length);

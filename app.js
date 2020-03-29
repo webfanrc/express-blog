@@ -21,7 +21,7 @@ app.get('/blog/lists', blog.lists);
 app.get('/blog/detail', blog.detail);
 app.post('/blog/update', blog.update);
 
-// // statistic
+// statistic
 app.get('/statistic/ip', statistic.ip);
 app.get('/statistic/article', statistic.article);
 
