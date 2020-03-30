@@ -20,6 +20,8 @@ app.get('/', site.index);
 app.get('/blog/lists', blog.lists);
 app.get('/blog/detail', blog.detail);
 app.post('/blog/update', blog.update);
+app.get('/blog/distinct', blog.distinct);
+app.get('/blog/tag', blog.tag);
 
 // statistic
 app.get('/statistic/ip', statistic.ip);

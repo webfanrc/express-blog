@@ -18,24 +18,36 @@ exports.lists = function(request, response) {
   select id, title, DATE_FORMAT(create_date, \'%Y年%m月%d日\') as date 
   from blog 
   order by create_date DESC`;
-  connection.query(sql, function(error, res) {
-    if (error) throw error;
-
-    let results = {};
-    results.blogList = res;
-
+  connection.query(sql, function(error, results) {
     response.write(JSON.stringify(results));
     response.end();
   });
 };
 
-exports.detail = function (request, response) {
+exports.detail = function(request, response) {
   let title = url.parse(request.url, true).query.title;
   let sql = `select * from blog where title = '${title}'`;
   connection.query(sql, function(error, results) {
     response.write(JSON.stringify(results));
     response.end();
   });
+};
+
+exports.distinct = function(request, response) {
+  let sql = `select distinct tag from blog`;
+  connection.query(sql, function(error, results) {
+    response.write(JSON.stringify(results));
+    response.end();
+  })
+};
+
+exports.tag = function(request, response) {
+  let tag = url.parse(request.url, true).query.tag;
+  let sql = `select title, id from blog where tag = '${tag}'`;
+  connection.query(sql, function(error, results) {
+    response.write(JSON.stringify(results));
+    response.end();
+  })
 };
 
 exports.update = function(request, response) {
