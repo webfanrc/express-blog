@@ -11,22 +11,20 @@ const statistic = require('./statistic');
 app.use(middleware.setHeader);
 app.use('/blog', middleware.ipFilterAndLogIn);
 
-
 // General
 app.get('/', site.index);
-
 
 // blog
 app.get('/blog/lists', blog.lists);
 app.get('/blog/detail', blog.detail);
 app.post('/blog/update', blog.update);
 app.get('/blog/distinct', blog.distinct);
-app.get('/blog/tag', blog.tag);
+app.get('/blog/all', blog.all);
+app.get('/blog/tagChange', blog.tagChange);
 
 // statistic
 app.get('/statistic/ip', statistic.ip);
 app.get('/statistic/article', statistic.article);
-
 
 // static
 app.use(express.static('public'));

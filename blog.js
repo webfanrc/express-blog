@@ -34,16 +34,29 @@ exports.detail = function(request, response) {
 };
 
 exports.distinct = function(request, response) {
-  let sql = `select distinct tag from blog`;
+  let sql = `select distinct tag from blog where tag IS NOT NULL`;
+  connection.query(sql, function(error, results) {
+
+    console.log(error);
+    response.write(JSON.stringify(results));
+    response.end();
+  })
+};
+
+exports.all = function(request, response) {
+  let sql = `
+  select title, id, create_date 
+  from blog
+  order by create_date DESC`;
   connection.query(sql, function(error, results) {
     response.write(JSON.stringify(results));
     response.end();
   })
 };
 
-exports.tag = function(request, response) {
+exports.tagChange = function(request, response) {
   let tag = url.parse(request.url, true).query.tag;
-  let sql = `select title, id from blog where tag = '${tag}'`;
+  let sql = `select title, id, create_date from blog where tag = '${tag}'`;
   connection.query(sql, function(error, results) {
     response.write(JSON.stringify(results));
     response.end();
