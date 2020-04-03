@@ -3,7 +3,6 @@ const app = express();
 const port = 3000;
 
 const middleware = require('./middleware');
-const site = require('./site');
 const blog = require('./blog');
 const statistic = require('./statistic');
 
@@ -11,8 +10,6 @@ const statistic = require('./statistic');
 app.use(middleware.setHeader);
 app.use('/blog', middleware.ipFilterAndLogIn);
 
-// General
-app.get('/', site.index);
 
 // blog
 app.get('/blog/lists', blog.lists);

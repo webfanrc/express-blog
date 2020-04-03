@@ -25,8 +25,10 @@ exports.lists = function(request, response) {
 };
 
 exports.detail = function(request, response) {
-  let title = url.parse(request.url, true).query.title;
-  let sql = `select * from blog where title = '${title}'`;
+  let id = url.parse(request.url, true).query.id;
+  console.log(url.parse(request.url, true).query);
+  let sql = `select * from blog where id = '${id}'`;
+  console.log(sql);
   connection.query(sql, function(error, results) {
     response.write(JSON.stringify(results));
     response.end();
@@ -56,7 +58,10 @@ exports.all = function(request, response) {
 
 exports.tagChange = function(request, response) {
   let tag = url.parse(request.url, true).query.tag;
-  let sql = `select title, id, create_date from blog where tag = '${tag}'`;
+  let sql = `
+  select title, id, create_date from blog 
+  where tag = '${tag}'
+  order by create_date DESC`;
   connection.query(sql, function(error, results) {
     response.write(JSON.stringify(results));
     response.end();
@@ -83,11 +88,11 @@ exports.update = function(request, response) {
           title: userData.blog_title,
           tag: userData.blog_tag,
         }, function(error, results, fields) {
-          console.log(error);
-          console.log(results.length);
+          console.log('error: ', error);
+          console.log('results: ', results.length);
         });
       } else {
-        console.log('fail');
+        console.log('密码不对');
       }
     }
   });
