@@ -1,16 +1,9 @@
-const mysql = require('mysql');
+const sql = require('./sql');
+var connection = sql.connection;
 const url = require("url");
 
 const crypto = require('crypto');
 const UpdateArticleSecret = "a80bfa6001b769ce9689d4208ff2840e21cecde470a7dc109407ae0b0e57821c";
-
-var connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'rootroot',
-  database: 'test'
-});
-connection.connect(); //todo: disconnect
 
 exports.lists = function(request, response) {
 

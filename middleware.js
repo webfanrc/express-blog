@@ -1,12 +1,5 @@
-const mysql = require('mysql');
-
-var connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'rootroot',
-  database: 'test'
-});
-connection.connect();
+const sql = require('./sql');
+var connection = sql.connection;
 
 exports.setHeader = function (req, res, next) {
   res.setHeader("Access-Control-Allow-Origin","http://localhost:8081");
