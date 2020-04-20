@@ -1,7 +1,7 @@
 const sql = require('./sql');
-var connection = sql.connection;
 const url = require("url");
 
+var connection = sql.connection;
 const crypto = require('crypto');
 const UpdateArticleSecret = "a80bfa6001b769ce9689d4208ff2840e21cecde470a7dc109407ae0b0e57821c";
 
@@ -10,7 +10,8 @@ exports.lists = function(request, response) {
   let sql = `
   select id, title, DATE_FORMAT(create_date, \'%Y年%m月%d日\') as date 
   from blog 
-  order by create_date DESC`;
+  order by create_date DESC, id DESC
+  `;
   connection.query(sql, function(error, results) {
     response.write(JSON.stringify(results));
     response.end();
@@ -20,10 +21,9 @@ exports.lists = function(request, response) {
 exports.detail = function(request, response) {
   let id = url.parse(request.url, true).query.id;
   console.log(url.parse(request.url, true).query);
-  let sql = `select * from blog where id = '${id}'`;
-  console.log(sql);
+  let sql = `select id, title, content, date_format(create_date, '%Y-%m-%d') create_date, date_format(edit_date, '%Y-%m-%d') edit_date, tag from blog where id = '${id}'`;
   connection.query(sql, function(error, results) {
-    response.write(JSON.stringify(results));
+    response.write(JSON.stringify(results[0]));
     response.end();
   });
 };
@@ -80,15 +80,132 @@ exports.update = function(request, response) {
           content: userData.blog_content,
           title: userData.blog_title,
           tag: userData.blog_tag,
-        }, function(error, results, fields) {
+        }, function(error, results) {
           console.log('error: ', error);
           console.log('results: ', results.length);
+          if (!error) {
+            response.write(JSON.stringify({
+              code: 0
+            }))
+          } else {
+            response.write(JSON.stringify({
+              code: 1,
+              message: error,
+            }))
+          }
+          response.end();
         });
       } else {
-        console.log('密码不对');
+        response.write(JSON.stringify({
+          code: 2,
+          message: 'wrong passport'
+        }));
+        response.end();
       }
+
     }
   });
+};
 
-  response.end();
+exports.new = function(request, response) {
+
+  let post = '';
+
+  request.on('data', function(chunk){
+    post += chunk;
+  });
+
+  request.on('end', function(){
+
+    if (post != '') {
+      let userData = JSON.parse(post);
+
+      const secret = userData.passport;
+      const hash = crypto.createHmac('sha256', secret).digest('hex');
+      if (hash == UpdateArticleSecret) {
+        let sql = `
+        INSERT into blog 
+        (title, content, create_date, tag) 
+        VALUES (
+        '${userData.blog_title}',
+        '${userData.blog_content}',
+        NOW(),
+        '${userData.blog_tag}'
+        )`;
+        console.log(sql);
+        connection.query(sql ,function(error, results) {
+          console.log('error: ', error);
+          console.log('results: ', results.length);
+          if (!error) {
+            response.write(JSON.stringify({
+              code: 0,
+              id: results.insertId,
+            }));
+          } else {
+            response.write(JSON.stringify({
+              code: 1,
+              message: error,
+            }));
+          }
+          response.end();
+        });
+      } else {
+        response.write(JSON.stringify({
+          code: 2,
+          message: 'wrong passport'
+        }));
+        response.end();
+      }
+
+    }
+  });
+};
+
+
+exports.delete = function(request, response) {
+
+  let post = '';
+
+  request.on('data', function(chunk){
+    post += chunk;
+  });
+
+  request.on('end', function(){
+
+    if (post != '') {
+      let userData = JSON.parse(post);
+
+      const secret = userData.passport;
+      const hash = crypto.createHmac('sha256', secret).digest('hex');
+      if (hash == UpdateArticleSecret) {
+        let sql = `
+        DELETE FROM blog 
+        WHERE id= '${userData.id}'
+        `;
+        console.log(sql);
+        connection.query(sql ,function(error, results) {
+          console.log('error: ', error);
+          console.log('results: ', results.length);
+          if (!error) {
+            response.write(JSON.stringify({
+              code: 0,
+            }));
+          } else {
+            response.write(JSON.stringify({
+              code: 1,
+              message: error,
+            }));
+          }
+          response.end();
+        });
+      } else {
+        response.write(JSON.stringify({
+          code: 2,
+          message: 'wrong passport'
+        }));
+        response.end();
+      }
+
+    }
+  });
 };

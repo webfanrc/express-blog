@@ -15,6 +15,8 @@ app.use('/blog', middleware.ipFilterAndLogIn);
 app.get('/blog/lists', blog.lists);
 app.get('/blog/detail', blog.detail);
 app.post('/blog/update', blog.update);
+app.post('/blog/new', blog.new);
+app.post('/blog/delete', blog.delete);
 app.get('/blog/distinct', blog.distinct);
 app.get('/blog/all', blog.all);
 app.get('/blog/tagChange', blog.tagChange);
