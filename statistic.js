@@ -1,4 +1,5 @@
 const sql = require('./sql');
+const url = require("url");
 var connection = sql.connection;
 
 
@@ -22,6 +23,21 @@ exports.article = function ( request, response ) {
     if (typeof res != 'undefined') {
       response.write(JSON.stringify(results));
     }
+    response.end();
+  });
+};
+
+exports.readAmount = function (request, response) {
+  let id = url.parse(request.url, true).query.id;
+  let sql = `
+    select count(*) as count
+    from ip
+    where view_title like '%detail?id=${id}'
+  `;
+  console.log(sql);
+  connection.query(sql, function (error, res) {
+    console.log(error);
+    response.write(JSON.stringify(res[0]));
     response.end();
   });
 };

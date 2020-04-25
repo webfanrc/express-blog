@@ -20,7 +20,6 @@ exports.lists = function(request, response) {
 
 exports.detail = function(request, response) {
   let id = url.parse(request.url, true).query.id;
-  console.log(url.parse(request.url, true).query);
   let sql = `select id, title, content, date_format(create_date, '%Y-%m-%d') create_date, date_format(edit_date, '%Y-%m-%d') edit_date, tag from blog where id = '${id}'`;
   connection.query(sql, function(error, results) {
     response.write(JSON.stringify(results[0]));
@@ -29,7 +28,10 @@ exports.detail = function(request, response) {
 };
 
 exports.distinct = function(request, response) {
-  let sql = `select distinct tag from blog where tag IS NOT NULL`;
+  let sql = `
+  select distinct tag
+  from blog
+  where tag IS NOT NULL`;
   connection.query(sql, function(error, results) {
 
     console.log(error);
