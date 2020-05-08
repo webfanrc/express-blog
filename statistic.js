@@ -4,7 +4,11 @@ var connection = sql.connection;
 
 
 exports.ip = function (request, response) {
-  let sql = `select date_format(view_date, '%Y-%m-%d') date, count(*) count from ip group by date_format(view_date, '%Y-%m-%d');`;
+  let sql = `
+  select 
+  date_format(view_date, '%Y-%m-%d') date, count(*) count 
+  from ip
+  group by date_format(view_date, '%Y-%m-%d');`;
   connection.query(sql, function(error, res) {
     let results = {};
     results.ipListFormat = res;
@@ -41,3 +45,24 @@ exports.readAmount = function (request, response) {
     response.end();
   });
 };
+
+exports.readAmounts = function (request, response) {
+  let sql = `  
+    select blog.id, A.count
+    from blog
+    join
+    (
+    select view_title, count(*) as count 
+    from ip
+    group by view_title
+    ) A
+    on A.view_title = '/blog/detail?id=31'
+  `;
+  console.log(sql);
+  connection.query(sql, function (error, res) {
+    console.log(error);
+    response.write(JSON.stringify(res[0]));
+    response.end();
+  });
+};
+

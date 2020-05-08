@@ -8,6 +8,7 @@ exports.setHeader = function (req, res, next) {
   next();
 };
 
+// TODO：去除不必要的统计
 exports.ipFilterAndLogIn = function (req, res, next) {
   let user_ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress; //需要在nginx上进行配置
   let view_title = req.originalUrl;
