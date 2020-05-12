@@ -38,31 +38,28 @@ exports.readAmount = function (request, response) {
     from ip
     where view_title like '%detail?id=${id}'
   `;
-  console.log(sql);
   connection.query(sql, function (error, res) {
-    console.log(error);
     response.write(JSON.stringify(res[0]));
     response.end();
   });
 };
 
-exports.readAmounts = function (request, response) {
-  let sql = `  
-    select blog.id, A.count
-    from blog
-    join
-    (
-    select view_title, count(*) as count 
-    from ip
-    group by view_title
-    ) A
-    on A.view_title = '/blog/detail?id=31'
+exports.orderByReading = function (request, response) {
+  let sql = `
+  select A.readAmounts, blog.title, blog.id, blog.create_date
+  from 
+      
+  (select view_title, count(*) as readAmounts
+  from ip
+  where view_title like '%/blog/detail?id%'
+  group by view_title)
+      
+  A INNER JOIN blog
+  on A.view_title like concat('%id=', blog.id)
+  order by A.readAmounts DESC, blog.create_date DESC
   `;
-  console.log(sql);
   connection.query(sql, function (error, res) {
-    console.log(error);
-    response.write(JSON.stringify(res[0]));
+    response.write(JSON.stringify(res));
     response.end();
   });
 };
-

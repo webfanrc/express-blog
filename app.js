@@ -25,6 +25,7 @@ app.get('/blog/tagChange', blog.tagChange);
 app.get('/statistic/ip', statistic.ip);
 app.get('/statistic/article', statistic.article);
 app.get('/statistic/readAmount', statistic.readAmount);
+app.get('/statistic/orderByReading', statistic.orderByReading);
 
 // static
 app.use(express.static('public'));
