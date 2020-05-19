@@ -14,6 +14,12 @@ app.use('/blog/all', middleware.ipFilter); // Archives.vue
 app.use('/statistic/ip', middleware.ipFilter); // Statistic.vue
 // todo // About.vue
 
+app.use('/blog/lists', middleware.pvFilter); // Blog.vue
+app.use('/blog/detail', middleware.pvFilter); // BlogDetail.vue
+app.use('/blog/all', middleware.pvFilter); // Archives.vue
+app.use('/statistic/ip', middleware.pvFilter); // Statistic.vue
+// todo // About.vue
+
 // blog
 app.get('/blog/lists', blog.lists);
 app.get('/blog/detail', blog.detail);

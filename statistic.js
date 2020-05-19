@@ -44,6 +44,19 @@ exports.readAmount = function (request, response) {
   });
 };
 
+exports.readAmountPv = function (request, response) {
+  let id = url.parse(request.url, true).query.id;
+  let sql = `
+    select count(*) as count
+    from pv
+    where view_title like '%detail?id=${id}'
+  `;
+  connection.query(sql, function (error, res) {
+    response.write(JSON.stringify(res[0]));
+    response.end();
+  });
+};
+
 exports.orderByReading = function (request, response) {
   let sql = `
   select A.readAmounts, blog.title, blog.id, blog.create_date

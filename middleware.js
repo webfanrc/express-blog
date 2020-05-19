@@ -9,7 +9,7 @@ exports.setHeader = function (req, res, next) {
 };
 
 // TODO：去除不必要的统计
-exports.ipFilterAndLogIn = function (req, res, next) {
+exports.ipFilter = function (req, res, next) {
   let user_ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress; //需要在nginx上进行配置
   let view_title = req.originalUrl;
   let view_date = new Date();
@@ -44,9 +44,27 @@ exports.ipFilterAndLogIn = function (req, res, next) {
           user_ip: user_ip,
           view_title: view_title,
           view_date: view_date,
+        }, function (error, res) {
+          console.log(error);
         })
       }
     }
     next();
   })
+};
+
+exports.pvFilter = function (req, res, next) {
+  let user_ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress; //需要在nginx上进行配置
+  let view_title = req.originalUrl;
+  let view_date = new Date();
+
+  connection.query('INSERT INTO pv SET ?', {
+    user_ip: user_ip,
+    view_title: view_title,
+    view_date: view_date,
+  }, function(error, res) {
+    console.log(error);
+  });
+
+  next();
 };
