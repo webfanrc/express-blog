@@ -8,8 +8,11 @@ const statistic = require('./statistic');
 
 // middleware
 app.use(middleware.setHeader);
-app.use('/blog', middleware.ipFilterAndLogIn);
-
+app.use('/blog/lists', middleware.ipFilter); // Blog.vue
+app.use('/blog/detail', middleware.ipFilter); // BlogDetail.vue
+app.use('/blog/all', middleware.ipFilter); // Archives.vue
+app.use('/statistic/ip', middleware.ipFilter); // Statistic.vue
+// todo // About.vue
 
 // blog
 app.get('/blog/lists', blog.lists);
@@ -32,4 +35,4 @@ app.use(express.static('public'));
 
 
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+app.listen(port, () => console.log(`App listening on port ${port}!`));
