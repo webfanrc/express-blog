@@ -26,7 +26,7 @@ module.exports = {
       path : '/data',
       "ssh_options": "StrictHostKeyChecking=no",
       'post-setup' : 'sudo -s && ls -la',
-      'post-deploy' : 'npm install && pm2 reload ecosystem.config.js --env production',
+      'post-deploy' : 'npm install && pm2 reload ecosystem.config.js --env production && cd /data/vue-blog && git pull && npm run build && nginx -s reload',
       "env"  : {
         "NODE_ENV": "production"
       }
