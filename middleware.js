@@ -45,7 +45,7 @@ exports.ipFilter = function (req, res, next) {
           view_title: view_title,
           view_date: view_date,
         }, function (error, res) {
-          console.log(error);
+          if (error) console.log(error);
         })
       }
     }
@@ -63,7 +63,7 @@ exports.pvFilter = function (req, res, next) {
     view_title: view_title,
     view_date: view_date,
   }, function(error, res) {
-    console.log(error);
+    if (error) console.log(error);
   });
 
   next();

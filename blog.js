@@ -34,7 +34,6 @@ exports.distinct = function(request, response) {
   where tag IS NOT NULL`;
   connection.query(sql, function(error, results) {
 
-    console.log(error);
     response.write(JSON.stringify(results));
     response.end();
   })
@@ -83,8 +82,6 @@ exports.update = function(request, response) {
           title: userData.blog_title,
           tag: userData.blog_tag,
         }, function(error, results) {
-          console.log('error: ', error);
-          console.log('results: ', results.length);
           if (!error) {
             response.write(JSON.stringify({
               code: 0
@@ -134,10 +131,7 @@ exports.new = function(request, response) {
         NOW(),
         '${userData.blog_tag}'
         )`;
-        console.log(sql);
         connection.query(sql ,function(error, results) {
-          console.log('error: ', error);
-          console.log('results: ', results.length);
           if (!error) {
             response.write(JSON.stringify({
               code: 0,
@@ -184,10 +178,7 @@ exports.delete = function(request, response) {
         DELETE FROM blog 
         WHERE id= '${userData.id}'
         `;
-        console.log(sql);
         connection.query(sql ,function(error, results) {
-          console.log('error: ', error);
-          console.log('results: ', results.length);
           if (!error) {
             response.write(JSON.stringify({
               code: 0,
