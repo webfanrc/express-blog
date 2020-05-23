@@ -32,6 +32,7 @@ app.get('/blog/tagChange', blog.tagChange);
 
 // statistic
 app.get('/statistic/ip', statistic.ip);
+app.get('/statistic/pv', statistic.pv);
 app.get('/statistic/article', statistic.article);
 app.get('/statistic/readAmount', statistic.readAmount);
 app.get('/statistic/orderByReading', statistic.orderByReading);

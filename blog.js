@@ -126,10 +126,10 @@ exports.new = function(request, response) {
         INSERT into blog 
         (title, content, create_date, tag) 
         VALUES (
-        '${userData.blog_title}',
-        '${userData.blog_content}',
+        "${userData.blog_title}",
+        "${userData.blog_content}",
         NOW(),
-        '${userData.blog_tag}'
+        "${userData.blog_tag}"
         )`;
         connection.query(sql ,function(error, results) {
           if (!error) {
@@ -138,6 +138,8 @@ exports.new = function(request, response) {
               id: results.insertId,
             }));
           } else {
+            console.log(sql);
+            // console.log(error);
             response.write(JSON.stringify({
               code: 1,
               message: error,
