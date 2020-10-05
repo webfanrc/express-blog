@@ -5,6 +5,7 @@ const port = 3000;
 const middleware = require('./middleware');
 const blog = require('./blog');
 const statistic = require('./statistic');
+const file = require('./file');
 
 // middleware
 app.use(middleware.setHeader);
@@ -37,8 +38,8 @@ app.get('/statistic/article', statistic.article);
 app.get('/statistic/readAmount', statistic.readAmount);
 app.get('/statistic/orderByReading', statistic.orderByReading);
 
-// static
-app.use(express.static('public'));
+// Serve File
+app.get('/file/ps', file.ps);
 
 
 
