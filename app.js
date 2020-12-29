@@ -6,9 +6,12 @@ const middleware = require('./middleware');
 const blog = require('./blog');
 const statistic = require('./statistic');
 const file = require('./file');
+const fileUpload = require('express-fileupload');
+
 
 // middleware
 app.use(middleware.setHeader);
+app.use(fileUpload());
 app.use('/blog/lists', middleware.ipFilter); // Blog.vue
 app.use('/blog/detail', middleware.ipFilter); // BlogDetail.vue
 app.use('/blog/all', middleware.ipFilter); // Archives.vue
@@ -40,6 +43,7 @@ app.get('/statistic/orderByReading', statistic.orderByReading);
 
 // Serve File
 app.get('/file/ps', file.ps);
+app.post('/file/singleNew', file.singleNew);
 
 
 
